@@ -322,6 +322,9 @@ var FillHandle = /** @class */ (function (_super) {
                 return;
             }
             var comp = cell.getComp();
+            if (!comp) {
+                return;
+            }
             comp.addOrRemoveCssClass('ag-selection-fill-top', false);
             comp.addOrRemoveCssClass('ag-selection-fill-right', false);
             comp.addOrRemoveCssClass('ag-selection-fill-bottom', false);
@@ -398,11 +401,13 @@ var FillHandle = /** @class */ (function (_super) {
                     if (cell) {
                         this.markedCells.push(cell);
                         var cellCtrl = cell.getComp();
-                        if (!cellInRange) {
-                            cellCtrl.addOrRemoveCssClass('ag-selection-fill-left', i === 0);
-                            cellCtrl.addOrRemoveCssClass('ag-selection-fill-right', i === colLen - 1);
+                        if (cellCtrl) {
+                            if (!cellInRange) {
+                                cellCtrl.addOrRemoveCssClass('ag-selection-fill-left', i === 0);
+                                cellCtrl.addOrRemoveCssClass('ag-selection-fill-right', i === colLen - 1);
+                            }
+                            cellCtrl.addOrRemoveCssClass(isMovingUp ? 'ag-selection-fill-top' : 'ag-selection-fill-bottom', this.rowPositionUtils.sameRow(row, endPosition));
                         }
-                        cellCtrl.addOrRemoveCssClass(isMovingUp ? 'ag-selection-fill-top' : 'ag-selection-fill-bottom', this.rowPositionUtils.sameRow(row, endPosition));
                     }
                 }
             }
