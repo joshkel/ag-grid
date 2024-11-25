@@ -1,9 +1,7 @@
 {
   "packages": [
     "community-modules/*",
-    "enterprise-modules/*",
-    "charts-packages/*",
-    "grid-packages/*"
+    "enterprise-modules/*"
   ],
   "useNx": false,
   "command": {
