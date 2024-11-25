@@ -22,7 +22,6 @@ export declare class FillHandle extends AbstractSelectionHandle {
     private handleValueChanged;
     private clearCellsInRange;
     private processValues;
-    private getValueFromObject;
     protected clearValues(): void;
     private clearMarkedPath;
     private clearCellValues;

@@ -125,7 +125,6 @@ let UndoRedoService = class UndoRedoService extends beanStub_1.BeanStub {
     }
     processAction(action, valueExtractor) {
         action.cellValueChanges.forEach(cellValueChange => {
-            var _a;
             const { rowIndex, rowPinned, columnId } = cellValueChange;
             const rowPosition = { rowIndex, rowPinned };
             const currentRow = this.getRowNode(rowPosition);
@@ -133,10 +132,7 @@ let UndoRedoService = class UndoRedoService extends beanStub_1.BeanStub {
             if (!currentRow.displayed) {
                 return;
             }
-            const extractedValue = valueExtractor(cellValueChange);
-            // when values are 'complex objects' we need to invoke their `toString()` to obtain value
-            const value = (typeof ((_a = extractedValue) === null || _a === void 0 ? void 0 : _a.toString) === 'function') ? extractedValue.toString() : extractedValue;
-            currentRow.setDataValue(columnId, value);
+            currentRow.setDataValue(columnId, valueExtractor(cellValueChange));
         });
     }
     processRange(ranges) {

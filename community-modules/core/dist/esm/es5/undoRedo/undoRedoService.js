@@ -171,7 +171,6 @@ var UndoRedoService = /** @class */ (function (_super) {
     UndoRedoService.prototype.processAction = function (action, valueExtractor) {
         var _this = this;
         action.cellValueChanges.forEach(function (cellValueChange) {
-            var _a;
             var rowIndex = cellValueChange.rowIndex, rowPinned = cellValueChange.rowPinned, columnId = cellValueChange.columnId;
             var rowPosition = { rowIndex: rowIndex, rowPinned: rowPinned };
             var currentRow = _this.getRowNode(rowPosition);
@@ -179,10 +178,7 @@ var UndoRedoService = /** @class */ (function (_super) {
             if (!currentRow.displayed) {
                 return;
             }
-            var extractedValue = valueExtractor(cellValueChange);
-            // when values are 'complex objects' we need to invoke their `toString()` to obtain value
-            var value = (typeof ((_a = extractedValue) === null || _a === void 0 ? void 0 : _a.toString) === 'function') ? extractedValue.toString() : extractedValue;
-            currentRow.setDataValue(columnId, value);
+            currentRow.setDataValue(columnId, valueExtractor(cellValueChange));
         });
     };
     UndoRedoService.prototype.processRange = function (ranges) {
