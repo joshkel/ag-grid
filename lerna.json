@@ -3,10 +3,7 @@
     "community-modules/*",
     "enterprise-modules/*",
     "charts-packages/*",
-    "grid-packages/*",
-    "examples-charts/*",
-    "examples-grid/*",
-    "grid-packages/ag-grid-docs/documentation/"
+    "grid-packages/*"
   ],
   "useNx": false,
   "command": {
