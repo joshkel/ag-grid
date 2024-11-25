@@ -166,7 +166,7 @@ class FillHandle extends abstractSelectionHandle_1.AbstractSelectionHandle {
             let currentValue;
             let skipValue = false;
             if (withinInitialRange) {
-                currentValue = this.valueService.getValue(col, rowNode);
+                currentValue = this.getValueFromObject(this.valueService.getValue(col, rowNode));
                 initialValues.push(currentValue);
                 withinInitialRange = updateInitialSet();
             }
@@ -174,7 +174,7 @@ class FillHandle extends abstractSelectionHandle_1.AbstractSelectionHandle {
                 const { value, fromUserFunction } = this.processValues(e, currentValues, initialValues, col, rowNode, idx++);
                 currentValue = value;
                 if (col.isCellEditable(rowNode)) {
-                    const cellValue = this.valueService.getValue(col, rowNode);
+                    const cellValue = this.getValueFromObject(this.valueService.getValue(col, rowNode));
                     if (!fromUserFunction || cellValue !== currentValue) {
                         rowNode.setDataValue(col, currentValue, 'rangeService');
                     }
@@ -232,7 +232,8 @@ class FillHandle extends abstractSelectionHandle_1.AbstractSelectionHandle {
                 return { value: userResult, fromUserFunction: true };
             }
         }
-        const allNumbers = !values.some(val => {
+        const processedValues = values.map(this.getValueFromObject);
+        const allNumbers = !processedValues.some(val => {
             const asFloat = parseFloat(val);
             return isNaN(asFloat) || asFloat.toString() !== val.toString();
         });
@@ -244,11 +245,18 @@ class FillHandle extends abstractSelectionHandle_1.AbstractSelectionHandle {
         if (event.altKey || !allNumbers) {
             if (allNumbers && initialValues.length === 1) {
                 const multiplier = (this.isUp || this.isLeft) ? -1 : 1;
-                return { value: parseFloat(core_1._.last(values)) + 1 * multiplier, fromUserFunction: false };
+                return { value: parseFloat(core_1._.last(processedValues)) + 1 * multiplier, fromUserFunction: false };
             }
-            return { value: values[idx % values.length], fromUserFunction: false };
+            return { value: processedValues[idx % processedValues.length], fromUserFunction: false };
         }
-        return { value: core_1._.last(core_1._.findLineByLeastSquares(values.map(Number))), fromUserFunction: false };
+        return { value: core_1._.last(core_1._.findLineByLeastSquares(processedValues.map(Number))), fromUserFunction: false };
+    }
+    getValueFromObject(val) {
+        if (val != null && typeof val === 'object') {
+            // @ts-ignore
+            return val.toString();
+        }
+        return val;
     }
     clearValues() {
         this.clearMarkedPath();

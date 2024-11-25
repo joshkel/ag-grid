@@ -218,7 +218,7 @@ var FillHandle = /** @class */ (function (_super) {
             var currentValue;
             var skipValue = false;
             if (withinInitialRange) {
-                currentValue = _this.valueService.getValue(col, rowNode);
+                currentValue = _this.getValueFromObject(_this.valueService.getValue(col, rowNode));
                 initialValues.push(currentValue);
                 withinInitialRange = updateInitialSet();
             }
@@ -226,7 +226,7 @@ var FillHandle = /** @class */ (function (_super) {
                 var _a = _this.processValues(e, currentValues, initialValues, col, rowNode, idx++), value = _a.value, fromUserFunction = _a.fromUserFunction;
                 currentValue = value;
                 if (col.isCellEditable(rowNode)) {
-                    var cellValue = _this.valueService.getValue(col, rowNode);
+                    var cellValue = _this.getValueFromObject(_this.valueService.getValue(col, rowNode));
                     if (!fromUserFunction || cellValue !== currentValue) {
                         rowNode.setDataValue(col, currentValue, 'rangeService');
                     }
@@ -284,7 +284,8 @@ var FillHandle = /** @class */ (function (_super) {
                 return { value: userResult, fromUserFunction: true };
             }
         }
-        var allNumbers = !values.some(function (val) {
+        var processedValues = values.map(this.getValueFromObject);
+        var allNumbers = !processedValues.some(function (val) {
             var asFloat = parseFloat(val);
             return isNaN(asFloat) || asFloat.toString() !== val.toString();
         });
@@ -296,11 +297,18 @@ var FillHandle = /** @class */ (function (_super) {
         if (event.altKey || !allNumbers) {
             if (allNumbers && initialValues.length === 1) {
                 var multiplier = (this.isUp || this.isLeft) ? -1 : 1;
-                return { value: parseFloat(core_1._.last(values)) + 1 * multiplier, fromUserFunction: false };
+                return { value: parseFloat(core_1._.last(processedValues)) + 1 * multiplier, fromUserFunction: false };
             }
-            return { value: values[idx % values.length], fromUserFunction: false };
+            return { value: processedValues[idx % processedValues.length], fromUserFunction: false };
         }
-        return { value: core_1._.last(core_1._.findLineByLeastSquares(values.map(Number))), fromUserFunction: false };
+        return { value: core_1._.last(core_1._.findLineByLeastSquares(processedValues.map(Number))), fromUserFunction: false };
+    };
+    FillHandle.prototype.getValueFromObject = function (val) {
+        if (val != null && typeof val === 'object') {
+            // @ts-ignore
+            return val.toString();
+        }
+        return val;
     };
     FillHandle.prototype.clearValues = function () {
         this.clearMarkedPath();
