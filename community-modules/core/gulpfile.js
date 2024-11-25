@@ -57,19 +57,19 @@ const tscTask = async (tsConfigFile, destination, sourceMaps) => {
 }
 
 const tscSrcCjsEs5Task = async () => {
-    return await tscTask('tsconfig.cjs.es5.json', 'dist/cjs/es5', true);
+    return await tscTask('tsconfig.cjs.es5.json', 'dist/cjs/es5', false);
 };
 
 const tscSrcCjsEs6Task = async () => {
-    return await tscTask('tsconfig.cjs.es6.json', 'dist/cjs/es6', true);
+    return await tscTask('tsconfig.cjs.es6.json', 'dist/cjs/es6', false);
 };
 
 const tscSrcEsModulesEs6Task = async () => {
-    return await tscTask('tsconfig.esm.es6.json', 'dist/esm/es6', true);
+    return await tscTask('tsconfig.esm.es6.json', 'dist/esm/es6', false);
 };
 
 const tscSrcEsModulesEs5Task = async () => {
-    return await tscTask('tsconfig.esm.es5.json', 'dist/esm/es5', true);
+    return await tscTask('tsconfig.esm.es5.json', 'dist/esm/es5', false);
 };
 
 const tscSrcCjsEs5ProdTask = async () => {

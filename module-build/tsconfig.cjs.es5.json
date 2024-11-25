@@ -8,7 +8,7 @@
     "declaration": true,
     "target": "ES5",
     "noImplicitAny": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "types": [],
     /* to prevent inclusion of node types etc, amongst others - sub modules need to specify types they require */
     "lib": [
